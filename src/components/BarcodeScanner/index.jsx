@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
-import BarcodeScannerComponent from 'react-qr-barcode-scanner';
+import React, { useState, useEffect, useRef } from 'react';
+import Quagga from 'quagga';
 
 export const BarcodeScanner = () => {
-  const [data, setData] = useState(null); // Use `null` sem tipo definido
+  const [data, setData] = useState(null);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
+  const [isQuaggaInitialized, setIsQuaggaInitialized] = useState(false); // Adicionando estado para controle
+  const scannerRef = useRef(null); // Referência para o container do scanner
 
   const handleOpenCamera = () => {
     setData(null); // Reset data
@@ -12,7 +14,52 @@ export const BarcodeScanner = () => {
 
   const handleCloseCamera = () => {
     setIsCameraOpen(false); // Close camera
+    if (isQuaggaInitialized) {
+      Quagga.stop(); // Só chama Quagga.stop() se estiver inicializado
+    }
   };
+
+  // Iniciar o Quagga para capturar imagens da câmera
+  useEffect(() => {
+    if (isCameraOpen) {
+      Quagga.init(
+        {
+          inputStream: {
+            name: 'Live',
+            type: 'LiveStream',
+            target: scannerRef.current, // Referência ao container da câmera
+            constraints: {
+              facingMode: 'environment', // Utiliza a câmera traseira
+            },
+          },
+          decoder: {
+            readers: ['code_128_reader', 'ean_reader', 'ean_8_reader', 'code_39_reader'], // Tipos de código que o Quagga pode ler
+          },
+        },
+        (err) => {
+          if (err) {
+            console.error('Erro ao inicializar o Quagga: ', err);
+            return;
+          }
+          setIsQuaggaInitialized(true); // Marca que o Quagga foi inicializado
+          Quagga.start(); // Iniciar o scanner
+        }
+      );
+
+      // Função que será chamada quando um código de barras for detectado
+      Quagga.onDetected((result) => {
+        setData(result.codeResult.code); // Captura o código
+        handleCloseCamera(); // Fecha a câmera automaticamente
+      });
+    }
+
+    // Limpeza ao desmontar ou fechar a câmera
+    return () => {
+      if (isQuaggaInitialized) {
+        Quagga.stop(); // Garantir que Quagga seja parado corretamente ao desmontar
+      }
+    };
+  }, [isCameraOpen, isQuaggaInitialized]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
@@ -30,16 +77,10 @@ export const BarcodeScanner = () => {
       {isCameraOpen && (
         <div className="w-full h-screen relative bg-black">
           {/* Scanner */}
-          <BarcodeScannerComponent
-            width="100%"
-            height={200}
-            videoOptions={{ facingMode: 'environment' }}
-            onUpdate={(error, result) => {
-              if (result?.getText) {
-                setData(result.getText()); // Captura o código
-                handleCloseCamera(); // Fecha a câmera
-              }
-            }}
+          <div
+            ref={scannerRef}
+            style={{ width: '100%', height: '100%' }}
+            className="scanner-container"
           />
 
           {/* Máscara com destaque para área retangular */}
