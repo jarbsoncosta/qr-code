@@ -14,13 +14,13 @@
       },
       {
         "name": "Notebook Acer",
-        "code": "NT11223",
+        "code": "90191039",
         "price": 2499.00,
         "quantity": 30
       },
       {
         "name": "Smartphone Samsung Galaxy",
-        "code": "SP45678",
+        "code": "17896986",
         "price": 1599.00,
         "quantity": 120
       },

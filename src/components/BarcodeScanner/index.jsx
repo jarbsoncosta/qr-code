@@ -1,14 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { BrowserMultiFormatReader } from '@zxing/library';
+import { products } from '../../utils/dados';
 
-export function  BarcodeScanner() {
+export function BarcodeScanner() {
   const [data, setData] = useState(null);
+  const [dataFilter, setDataFilter] = useState(null);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const videoRef = useRef(null);
   const readerRef = useRef(null);
 
-  const handleOpenCamera = async () => {
+  const handleOpenCamera = () => {
     setData(null); // Limpa o código capturado
+    setDataFilter(null); // Limpa o filtro de produtos
     setIsCameraOpen(true); // Ativa a câmera
   };
 
@@ -26,6 +29,13 @@ export function  BarcodeScanner() {
       videoRef.current.srcObject = null;
     }
   };
+
+  useEffect(() => {
+    if (data) {
+      const result = products.find((item) => item.code === data);
+      setDataFilter(result || null); // Atualiza com o produto ou `null` se não encontrar
+    }
+  }, [data]);
 
   useEffect(() => {
     if (isCameraOpen) {
@@ -96,6 +106,15 @@ export function  BarcodeScanner() {
           <h2 className="text-lg font-medium">Código Capturado:</h2>
           <p className="text-gray-700">{data}</p>
 
+          {dataFilter ? (
+            <div className="mt-4">
+              <h3 className="text-md font-semibold">Produto Encontrado:</h3>
+              <p className="text-gray-700">{dataFilter.name}</p>
+            </div>
+          ) : (
+            <p className="text-red-500 mt-2">Produto não encontrado!</p>
+          )}
+
           <button
             onClick={() => {
               handleCloseCamera();
@@ -109,4 +128,4 @@ export function  BarcodeScanner() {
       )}
     </div>
   );
-};
+}
