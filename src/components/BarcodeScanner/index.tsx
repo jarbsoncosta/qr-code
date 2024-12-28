@@ -1,32 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import BarcodeScannerComponent from 'react-qr-barcode-scanner';
-import './styles.css';
-import { products } from '../../utils/dados';
+import './styles.css'
 
 export const BarcodeScanner: React.FC = () => {
   const [data, setData] = useState<string | null>(null);
   const [isCameraOpen, setIsCameraOpen] = useState<boolean>(false);
-  const [filteredProduct, setFilteredProduct] = useState<any | null>(null); // Armazenar o produto filtrado
-
-  // Função para filtrar o produto com base no código
-  const handleFilterData = (code: string | null) => {
-    if (code) {
-      const product = products.find((item) => item.code === code);
-      return product;
-    }
-    return null;
-  };
-
-  useEffect(() => {
-    if (data) {
-      const product = handleFilterData(data); // Filtra o produto com base no código
-      setFilteredProduct(product); // Atualiza o estado com o produto filtrado
-    }
-  }, [data]); // O useEffect só será chamado quando `data` mudar
 
   const handleOpenCamera = () => {
     setData(null); // Reseta o dado capturado
-    setFilteredProduct(null); // Reseta o produto filtrado
     setIsCameraOpen(true); // Abre a câmera
   };
 
@@ -36,7 +17,7 @@ export const BarcodeScanner: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-      {!isCameraOpen && (
+     {!isCameraOpen && (
         <button
           onClick={handleOpenCamera}
           className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
@@ -51,11 +32,12 @@ export const BarcodeScanner: React.FC = () => {
           <BarcodeScannerComponent
             width="100%"
             height={200}
+
             onUpdate={(error, result) => {
-              console.log(error);
+                console.log
               if (result?.getText) {
                 setData(result.getText()); // Captura o código
-                handleCloseCamera(); // Fecha a câmera imediatamente após capturar o código
+                handleCloseCamera();
               }
             }}
           />
@@ -94,28 +76,10 @@ export const BarcodeScanner: React.FC = () => {
         </div>
       )}
 
-      {data && !filteredProduct && (
-        <div className="mt-4 text-red-500">
-          <h2 className="text-lg font-medium">Produto não encontrado para o código:</h2>
-          <p className="text-gray-700">{data}</p>
-        </div>
-      )}
-
-      {filteredProduct && (
+      {data && (
         <div className="mt-4">
-          <h2 className="text-lg font-medium">Produto Encontrado:</h2>
-          <p className="text-gray-700">
-            <strong>Nome:</strong> {filteredProduct.name}
-          </p>
-          <p className="text-gray-700">
-            <strong>Código:</strong> {filteredProduct.code}
-          </p>
-          <p className="text-gray-700">
-            <strong>Preço:</strong> R$ {filteredProduct.price.toFixed(2)}
-          </p>
-          <p className="text-gray-700">
-            <strong>Quantidade:</strong> {filteredProduct.quantity}
-          </p>
+          <h2 className="text-lg font-medium">Código Capturado:</h2>
+          <p className="text-gray-700">{data}</p>
         </div>
       )}
     </div>
