@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import BarcodeScannerComponent from 'react-qr-barcode-scanner';
-import './styles.css'
 
 export const BarcodeScanner: React.FC = () => {
   const [data, setData] = useState<string | null>(null);
@@ -17,7 +16,9 @@ export const BarcodeScanner: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-     {!isCameraOpen && (
+      <h1 className="text-2xl font-bold mb-4">Leitor de Código de Barras</h1>
+
+      {!isCameraOpen && (
         <button
           onClick={handleOpenCamera}
           className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
@@ -27,12 +28,11 @@ export const BarcodeScanner: React.FC = () => {
       )}
 
       {isCameraOpen && (
-        <div className="">
+        <div className="w-full h-screen relative bg-black">
           {/* Scanner */}
           <BarcodeScannerComponent
             width="100%"
             height="100%"
-
             onUpdate={(error, result) => {
                 console.log(error)
               if (result?.getText) {
