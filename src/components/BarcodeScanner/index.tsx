@@ -64,7 +64,7 @@ export const BarcodeScanner: React.FC = () => {
               </div>
               <div className="flex-1 bg-black bg-opacity-50"></div>
             </div>
-          </div>
+          </div >
 
           {/* Botão para fechar a câmera */}
           <button
