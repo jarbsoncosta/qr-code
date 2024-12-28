@@ -4,15 +4,15 @@
   flex-direction: column;
  justify-items: start;
  align-items: center;
-  width: 100%;
-  min-height: 100vh;
- 
-  
+  width: 100%; 
 }
 .video-container {
   background-color: white;
   position: relative;
-  border: 2px solid red
+  border: 2px solid red;
+  height: 200px;
+  padding: 0.5rem;
+  border-radius: 5px;
 
 }
 .video {
