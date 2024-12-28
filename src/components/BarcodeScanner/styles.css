@@ -1,15 +1,16 @@
 .scanner-container {
+  
   display: flex;
   flex-direction: column;
  justify-items: start;
+ align-items: center;
   width: 100%;
-
   min-height: 100vh;
   background-color: #f4f4f4;
   padding: 16px;
 }
 .video-container {
-  width: 100%;
+  width:200px;
   height: 150px;
   background-color: white;
   position: relative;

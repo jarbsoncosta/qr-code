@@ -81,7 +81,7 @@ export function BarcodeScanner() {
    
       {!isCameraOpen && !data && (
         <button onClick={handleOpenCamera} className="button button-open">
-          Abrir Câmera
+          Escanear
         </button>
       )}
 
