@@ -92,7 +92,7 @@ export function BarcodeScanner() {
       )}
 
     {isCameraOpen && (
-        <div >
+        <div  >
           <button onClick={handleCloseCamera} className="button button-close">
             Fechar Câmera
           </button>
