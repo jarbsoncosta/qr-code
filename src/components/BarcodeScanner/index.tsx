@@ -31,7 +31,7 @@ export const BarcodeScanner: React.FC = () => {
           {/* Scanner */}
           <BarcodeScannerComponent
             width="100%"
-            height={200}
+            height="100%"
 
             onUpdate={(error, result) => {
                 console.log(error)
