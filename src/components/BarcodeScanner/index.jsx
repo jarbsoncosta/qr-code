@@ -1,65 +1,58 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Quagga from 'quagga';
+import { BrowserMultiFormatReader } from '@zxing/library';
 
-export const BarcodeScanner = () => {
-  const [data, setData] = useState(null);
-  const [isCameraOpen, setIsCameraOpen] = useState(false);
-  const [isQuaggaInitialized, setIsQuaggaInitialized] = useState(false); // Adicionando estado para controle
-  const scannerRef = useRef(null); // Referência para o container do scanner
+export function  BarcodeScanner() {
+  const [data, setData] = useState(null); // Para armazenar o código de barras capturado
+  const [isCameraOpen, setIsCameraOpen] = useState(false); // Controle da câmera
+  const videoRef = useRef(null); // Referência para o elemento de vídeo da câmera
+  const [isScanning, setIsScanning] = useState(false); // Estado para verificar se está escaneando
 
+  // Função para iniciar a leitura do código de barras
   const handleOpenCamera = () => {
     setData(null); // Reset data
-    setIsCameraOpen(true); // Open camera
+    setIsCameraOpen(true); // Ativa a câmera
   };
 
+  // Função para fechar a câmera
   const handleCloseCamera = () => {
-    setIsCameraOpen(false); // Close camera
-    if (isQuaggaInitialized) {
-      Quagga.stop(); // Só chama Quagga.stop() se estiver inicializado
-    }
+    setIsCameraOpen(false); // Desativa a câmera
+    setIsScanning(false); // Para o escaneamento
   };
 
-  // Iniciar o Quagga para capturar imagens da câmera
   useEffect(() => {
+    // Quando a câmera estiver aberta, inicialize o leitor de códigos de barras
     if (isCameraOpen) {
-      Quagga.init(
-        {
-          inputStream: {
-            name: 'Live',
-            type: 'LiveStream',
-            target: scannerRef.current, // Referência ao container da câmera
-            constraints: {
-              facingMode: 'environment', // Utiliza a câmera traseira
-            },
-          },
-          decoder: {
-            readers: ['code_128_reader', 'ean_reader', 'ean_8_reader', 'code_39_reader'], // Tipos de código que o Quagga pode ler
-          },
-        },
-        (err) => {
-          if (err) {
-            console.error('Erro ao inicializar o Quagga: ', err);
-            return;
-          }
-          setIsQuaggaInitialized(true); // Marca que o Quagga foi inicializado
-          Quagga.start(); // Iniciar o scanner
+      const codeReader = new BrowserMultiFormatReader(); // Criação do leitor de códigos
+
+      const startScanner = async () => {
+        try {
+          await codeReader.decodeFromVideoDevice(
+            null, // usa a câmera padrão
+            videoRef.current, // referência para o vídeo
+            (result, error) => {
+              if (result) {
+                setData(result.getText()); // Atualiza com o código de barras lido
+                setIsScanning(false); // Para o escaneamento assim que um código for lido
+                handleCloseCamera(); // Fecha a câmera após detectar o código
+              } else if (error && !isScanning) {
+                console.error(error);
+              }
+            }
+          );
+          setIsScanning(true); // Inicia o escaneamento
+        } catch (err) {
+          console.error("Erro ao tentar escanear:", err);
         }
-      );
+      };
 
-      // Função que será chamada quando um código de barras for detectado
-      Quagga.onDetected((result) => {
-        setData(result.codeResult.code); // Captura o código
-        handleCloseCamera(); // Fecha a câmera automaticamente
-      });
+      startScanner();
+
+      // Função de limpeza para parar o scanner quando a câmera for fechada ou o componente desmontar
+      return () => {
+        codeReader.reset();
+      };
     }
-
-    // Limpeza ao desmontar ou fechar a câmera
-    return () => {
-      if (isQuaggaInitialized) {
-        Quagga.stop(); // Garantir que Quagga seja parado corretamente ao desmontar
-      }
-    };
-  }, [isCameraOpen, isQuaggaInitialized]);
+  }, [isCameraOpen, isScanning]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
@@ -76,14 +69,10 @@ export const BarcodeScanner = () => {
 
       {isCameraOpen && (
         <div className="w-full h-screen relative bg-black">
-          {/* Scanner */}
-          <div
-            ref={scannerRef}
-            style={{ width: '100%', height: '100%' }}
-            className="scanner-container"
-          />
+          {/* Elemento de vídeo que vai mostrar o feed da câmera */}
+          <video ref={videoRef} style={{ width: '100%', height: '100%' }} />
 
-          {/* Máscara com destaque para área retangular */}
+          {/* Máscara com destaque para a área do código de barras */}
           <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center">
             <div className="absolute inset-0 bg-black bg-opacity-50 z-10" />
 
