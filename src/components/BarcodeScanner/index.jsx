@@ -87,8 +87,12 @@ export function BarcodeScanner() {
 
       {isCameraOpen && (
         <div className="video-container">
-          <video ref={videoRef} className="video" autoPlay playsInline />
+          <video ref={videoRef} className="video" autoPlay playsInline />          
+        </div>
+      )}
 
+    {isCameraOpen && (
+        <div >
           <button onClick={handleCloseCamera} className="button button-close">
             Fechar Câmera
           </button>
