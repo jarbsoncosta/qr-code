@@ -34,7 +34,7 @@ export const BarcodeScanner: React.FC = () => {
             height={200}
 
             onUpdate={(error, result) => {
-                console.log
+                console.log(error)
               if (result?.getText) {
                 setData(result.getText()); // Captura o código
                 handleCloseCamera();
