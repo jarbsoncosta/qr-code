@@ -9,8 +9,7 @@
 .video-container {
   background-color: white;
   position: relative;
-  border: 2px solid red;
-  height: 200px;
+  border: 2px solid red; 
   padding: 0.5rem;
   border-radius: 5px;
 
