@@ -32,12 +32,12 @@ export const BarcodeScanner: React.FC = () => {
           {/* Scanner */}
           <BarcodeScannerComponent
             width="100%"
-            height="100%"
+            height={200}
             onUpdate={(error, result) => {
-                console.log(error)
+              console.log(error);
               if (result?.getText) {
                 setData(result.getText()); // Captura o código
-                handleCloseCamera();
+                handleCloseCamera(); // Fecha a câmera
               }
             }}
           />
