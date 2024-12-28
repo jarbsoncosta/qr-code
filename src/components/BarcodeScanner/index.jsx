@@ -26,9 +26,14 @@ export function  BarcodeScanner() {
 
       const startScanner = async () => {
         try {
+          // Configura o leitor para apenas ler códigos EAN-13
+          const hints = {
+            readers: ['ean_13_reader'], // Foca no leitor EAN-13
+          };
+
           await codeReader.decodeFromVideoDevice(
-            null, // usa a câmera padrão
-            videoRef.current, // referência para o vídeo
+            null, // Usa a câmera padrão
+            videoRef.current, // Referência para o vídeo
             (result, error) => {
               if (result) {
                 setData(result.getText()); // Atualiza com o código de barras lido
@@ -37,7 +42,8 @@ export function  BarcodeScanner() {
               } else if (error && !isScanning) {
                 console.error(error);
               }
-            }
+            },
+            hints // Passa as configurações para o decode
           );
           setIsScanning(true); // Inicia o escaneamento
         } catch (err) {
@@ -56,7 +62,7 @@ export function  BarcodeScanner() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-      <h1 className="text-2xl font-bold mb-4">Leitor de Código de Barras</h1>
+      <h1 className="text-2xl font-bold mb-4">Leitor de Código de Barras (EAN-13)</h1>
 
       {!isCameraOpen && (
         <button
