@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import BarcodeScannerComponent from 'react-qr-barcode-scanner'; // Importação corrigida
+import BarcodeScannerComponent from 'react-qr-barcode-scanner';
 
 export const BarcodeScanner: React.FC = () => {
   const [data, setData] = useState<string | null>(null);
@@ -28,20 +28,45 @@ export const BarcodeScanner: React.FC = () => {
       )}
 
       {isCameraOpen && (
-        <div className="w-full max-w-md bg-white p-4 shadow-lg rounded-lg">
+        <div className="w-full h-screen relative bg-black">
+          {/* Scanner */}
           <BarcodeScannerComponent
             width="100%"
-            height={200}
-            onUpdate={(err, result) => {
-              if (result) {
-                setData(result.text); // Armazena o código de barras lido
-                handleCloseCamera(); // Fecha a câmera após leitura
+            height="50%"
+            onUpdate={(error, result) => {
+              if (result?.getText) {
+                console.log(error)
+                setData(result.getText()); // Captura o código
+                handleCloseCamera();
               }
             }}
           />
+
+          {/* Máscara com destaque para área retangular */}
+          <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center">
+            {/* Máscara escura */}
+            <div className="absolute inset-0 bg-black bg-opacity-50 z-10" />
+
+            {/* Retângulo central */}
+            <div className="relative w-4/5 h-32 border-4 border-white rounded-md z-20" />
+
+            {/* Overlay para destacar o retângulo */}
+            <div className="absolute top-0 left-0 w-full h-full flex flex-col z-10">
+              <div className="flex-1 bg-black bg-opacity-50"></div>
+              <div className="h-32 flex-shrink-0 flex items-center justify-center">
+                {/* Texto informativo no retângulo */}
+                <p className="text-white text-sm font-medium z-30">
+                  Posicione o código de barras no centro
+                </p>
+              </div>
+              <div className="flex-1 bg-black bg-opacity-50"></div>
+            </div>
+          </div>
+
+          {/* Botão para fechar a câmera */}
           <button
             onClick={handleCloseCamera}
-            className="mt-4 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300"
+            className="absolute bottom-4 left-1/2 transform -translate-x-1/2 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300 z-30"
           >
             Fechar Câmera
           </button>
