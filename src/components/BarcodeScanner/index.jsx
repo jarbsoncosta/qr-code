@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { BrowserMultiFormatReader } from '@zxing/library';
 import { products } from '../../utils/dados';
+import "./styles.css"
 
 export function BarcodeScanner() {
   const [data, setData] = useState(null);
@@ -76,43 +77,36 @@ export function BarcodeScanner() {
   }, [isCameraOpen]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-      <h1 className="text-2xl font-bold mb-4">Leitor de Código de Barras (EAN-13)</h1>
-
+    <div className="scanner-container">
+   
       {!isCameraOpen && !data && (
-        <button
-          onClick={handleOpenCamera}
-          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
-        >
+        <button onClick={handleOpenCamera} className="button button-open">
           Abrir Câmera
         </button>
       )}
 
       {isCameraOpen && (
-        <div className="w-full h-screen relative bg-black">
-          <video ref={videoRef} style={{ width: '100%', height: '100%' }} autoPlay playsInline />
+        <div className="video-container">
+          <video ref={videoRef} className="video" autoPlay playsInline />
 
-          <button
-            onClick={handleCloseCamera}
-            className="absolute bottom-4 left-1/2 transform -translate-x-1/2 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300"
-          >
+          <button onClick={handleCloseCamera} className="button button-close">
             Fechar Câmera
           </button>
         </div>
       )}
 
       {data && (
-        <div className="mt-4">
-          <h2 className="text-lg font-medium">Código Capturado:</h2>
-          <p className="text-gray-700">{data}</p>
+        <div className="result-container">
+          <h2 className="subtitle">Código Capturado:</h2>
+          <p className="result-text">{data}</p>
 
           {dataFilter ? (
-            <div className="mt-4">
-              <h3 className="text-md font-semibold">Produto Encontrado:</h3>
-              <p className="text-gray-700">{dataFilter.name}</p>
+            <div className="product-info">
+              <h3 className="product-title">Produto Encontrado:</h3>
+              <p className="product-name">{dataFilter.name}</p>
             </div>
           ) : (
-            <p className="text-red-500 mt-2">Produto não encontrado!</p>
+            <p className="error-text">Produto não encontrado!</p>
           )}
 
           <button
@@ -120,7 +114,7 @@ export function BarcodeScanner() {
               handleCloseCamera();
               handleOpenCamera(); // Reinicia a câmera
             }}
-            className="mt-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300"
+            className="button button-restart"
           >
             Escanear Novo Código
           </button>
