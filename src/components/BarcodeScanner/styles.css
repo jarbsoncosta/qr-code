@@ -33,14 +33,25 @@
   width: 100%;
   background-color: #007bff;
   display: flex;
-
   padding: 10px;
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
 }
 
-
 .menu-button:hover {
   background-color: #f4f4f4;
+}
+
+.button-menu{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 5px; 
+  border: 0;
+  
+}
+.button-menu strong{
+  font-size: 0.75rem;
+  color: white;
 }
 
 .result-container {
