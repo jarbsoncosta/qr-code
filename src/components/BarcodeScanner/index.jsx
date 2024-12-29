@@ -114,7 +114,7 @@ export function BarcodeScanner() {
        ) : (
          <p className="error-text">Produto não encontrado!</p>
        )}
-
+{/* 
        <button
          onClick={() => {
            handleCloseCamera();
@@ -123,7 +123,7 @@ export function BarcodeScanner() {
          className="button button-restart"
        >
          Escanear Novo Código
-       </button>
+       </button> */}
      </div>
    )}
  </div>
