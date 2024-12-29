@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { BrowserMultiFormatReader } from '@zxing/library';
 import { products } from '../../utils/dados';
-import "./styles.css"
+import "./styles.css";
 import { Barcode, ClipboardText } from '@phosphor-icons/react';
 
 export function BarcodeScanner() {
@@ -10,6 +10,9 @@ export function BarcodeScanner() {
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const videoRef = useRef(null);
   const readerRef = useRef(null);
+
+  // Carregar o arquivo de áudio
+  const beepSound = useRef(new Audio('/beep.mp3'));
 
   const handleOpenCamera = () => {
     setData(null); // Limpa o código capturado
@@ -57,6 +60,8 @@ export function BarcodeScanner() {
             videoRef.current,
             (result, error) => {
               if (result) {
+                // Tocar o som de "beep" ao capturar o código
+                beepSound.current.play();
                 setData(result.getText());
                 handleCloseCamera(); // Fecha a câmera ao capturar o código
               } else if (error) {
@@ -79,65 +84,40 @@ export function BarcodeScanner() {
 
   return (
     <>
-    <div className="scanner-container">
-   
-   {/* {!isCameraOpen && !data && (
-     <button onClick={handleOpenCamera} className="button button-open">
-       Escanear
-     </button>
-   )} */}
+      <div className="scanner-container">
+        {isCameraOpen && (
+          <div className="video-container">
+            <video ref={videoRef} className="video" autoPlay playsInline />
+          </div>
+        )}
 
-   {isCameraOpen && (
-     <div className="video-container">
-       <video ref={videoRef} className="video" autoPlay playsInline />          
-     </div>
-   )}
+        {data && (
+          <div className="result-container">
+            <h2 className="subtitle">Código Capturado:</h2>
+            <p className="result-text">{data}</p>
 
- {isCameraOpen && (
-     <div  >
-       {/* <button onClick={handleCloseCamera} className="button button-close">
-         Fechar Câmera
-       </button> */}
-     </div>
-   )}
+            {dataFilter ? (
+              <div className="product-info">
+                <h3 className="product-title">Produto Encontrado:</h3>
+                <p className="product-name">{dataFilter.name}</p>
+              </div>
+            ) : (
+              <p className="error-text">Produto não encontrado!</p>
+            )}
+          </div>
+        )}
+      </div>
 
-   {data && (
-     <div className="result-container">
-       <h2 className="subtitle">Código Capturado:</h2>
-       <p className="result-text">{data}</p>
-
-       {dataFilter ? (
-         <div className="product-info">
-           <h3 className="product-title">Produto Encontrado:</h3>
-           <p className="product-name">{dataFilter.name}</p>
-         </div>
-       ) : (
-         <p className="error-text">Produto não encontrado!</p>
-       )}
-{/* 
-       <button
-         onClick={() => {
-           handleCloseCamera();
-           handleOpenCamera(); // Reinicia a câmera
-         }}
-         className="button button-restart"
-       >
-         Escanear Novo Código
-       </button> */}
-     </div>
-   )}
- </div>
-  {/* Menu fixo no rodapé */}
-  <div className="footer-menu">      
-       <div  className='button-menu'>     
-          <Barcode color='#ffff' onClick={handleOpenCamera} size={35} />
-        <strong> ESCANEAR</strong>        
-       </div>
-       <div  className='button-menu'>     
-          <ClipboardText color='#ffff' onClick={handleCloseCamera} size={35} />
-        <strong> RELATÓRIO</strong>        
-       </div>
-        
+      {/* Menu fixo no rodapé */}
+      <div className="footer-menu">
+        <div className="button-menu">
+          <Barcode color="#ffff" onClick={handleOpenCamera} size={35} />
+          <strong> ESCANEAR</strong>
+        </div>
+        <div className="button-menu">
+          <ClipboardText color="#ffff" onClick={handleCloseCamera} size={35} />
+          <strong> RELATÓRIO</strong>
+        </div>
       </div>
     </>
   );
