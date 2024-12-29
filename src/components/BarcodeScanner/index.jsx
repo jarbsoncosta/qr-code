@@ -77,53 +77,68 @@ export function BarcodeScanner() {
   }, [isCameraOpen]);
 
   return (
+    <>
     <div className="scanner-container">
    
-      {!isCameraOpen && !data && (
-        <button onClick={handleOpenCamera} className="button button-open">
-          Escanear
-        </button>
-      )}
+   {/* {!isCameraOpen && !data && (
+     <button onClick={handleOpenCamera} className="button button-open">
+       Escanear
+     </button>
+   )} */}
 
-      {isCameraOpen && (
-        <div className="video-container">
-          <video ref={videoRef} className="video" autoPlay playsInline />          
-        </div>
-      )}
+   {isCameraOpen && (
+     <div className="video-container">
+       <video ref={videoRef} className="video" autoPlay playsInline />          
+     </div>
+   )}
 
-    {isCameraOpen && (
-        <div  >
-          <button onClick={handleCloseCamera} className="button button-close">
-            Fechar Câmera
+ {isCameraOpen && (
+     <div  >
+       <button onClick={handleCloseCamera} className="button button-close">
+         Fechar Câmera
+       </button>
+     </div>
+   )}
+
+   {data && (
+     <div className="result-container">
+       <h2 className="subtitle">Código Capturado:</h2>
+       <p className="result-text">{data}</p>
+
+       {dataFilter ? (
+         <div className="product-info">
+           <h3 className="product-title">Produto Encontrado:</h3>
+           <p className="product-name">{dataFilter.name}</p>
+         </div>
+       ) : (
+         <p className="error-text">Produto não encontrado!</p>
+       )}
+
+       <button
+         onClick={() => {
+           handleCloseCamera();
+           handleOpenCamera(); // Reinicia a câmera
+         }}
+         className="button button-restart"
+       >
+         Escanear Novo Código
+       </button>
+     </div>
+   )}
+ </div>
+  {/* Menu fixo no rodapé */}
+  <div className="footer-menu">
+      
+          <button onClick={handleOpenCamera} >
+            Escanear
           </button>
-        </div>
-      )}
-
-      {data && (
-        <div className="result-container">
-          <h2 className="subtitle">Código Capturado:</h2>
-          <p className="result-text">{data}</p>
-
-          {dataFilter ? (
-            <div className="product-info">
-              <h3 className="product-title">Produto Encontrado:</h3>
-              <p className="product-name">{dataFilter.name}</p>
-            </div>
-          ) : (
-            <p className="error-text">Produto não encontrado!</p>
-          )}
-
-          <button
-            onClick={() => {
-              handleCloseCamera();
-              handleOpenCamera(); // Reinicia a câmera
-            }}
-            className="button button-restart"
-          >
-            Escanear Novo Código
+          <button onClick={handleOpenCamera} >
+            Escanear
           </button>
-        </div>
-      )}
-    </div>
+       
+
+     
+      </div>
+    </>
   );
 }
