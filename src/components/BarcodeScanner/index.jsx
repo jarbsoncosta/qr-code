@@ -134,7 +134,7 @@ export function BarcodeScanner() {
         <strong> ESCANEAR</strong>        
        </div>
        <div  className='button-menu'>     
-          <ClipboardText color='#ffff' onClick={handleOpenCamera} size={35} />
+          <ClipboardText color='#ffff' onClick={handleCloseCamera} size={35} />
         <strong> RELATÓRIO</strong>        
        </div>
         
