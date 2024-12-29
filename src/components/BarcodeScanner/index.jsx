@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Howl } from 'howler';
 import { BrowserMultiFormatReader } from '@zxing/library';
 import { products } from '../../utils/dados';
 import "./styles.css";
 import { Barcode, ClipboardText } from '@phosphor-icons/react';
+import beepSoundFile from '../../audio/som.mp3';
+
 
 export function BarcodeScanner() {
   const [data, setData] = useState(null);
@@ -11,8 +14,13 @@ export function BarcodeScanner() {
   const videoRef = useRef(null);
   const readerRef = useRef(null);
 
-  // Carregar o arquivo de áudio
-  const beepSound = useRef(new Audio('/beep.mp3'));
+  // Configurando o som com Howler.js
+  const beepSound = useRef(
+    new Howl({
+      src: [beepSoundFile], // Caminho do arquivo de som
+      volume: 1.0, // Volume de 0.0 a 1.0
+    })
+  );
 
   const handleOpenCamera = () => {
     setData(null); // Limpa o código capturado
@@ -60,7 +68,7 @@ export function BarcodeScanner() {
             videoRef.current,
             (result, error) => {
               if (result) {
-                // Tocar o som de "beep" ao capturar o código
+                // Tocar o som ao capturar o código
                 beepSound.current.play();
                 setData(result.getText());
                 handleCloseCamera(); // Fecha a câmera ao capturar o código
@@ -108,7 +116,6 @@ export function BarcodeScanner() {
         )}
       </div>
 
-      {/* Menu fixo no rodapé */}
       <div className="footer-menu">
         <div className="button-menu">
           <Barcode color="#ffff" onClick={handleOpenCamera} size={35} />
