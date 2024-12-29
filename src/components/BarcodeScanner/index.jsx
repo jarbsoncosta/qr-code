@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { BrowserMultiFormatReader } from '@zxing/library';
 import { products } from '../../utils/dados';
 import "./styles.css"
-import { Barcode } from '@phosphor-icons/react';
+import { Barcode, ClipboardText } from '@phosphor-icons/react';
 
 export function BarcodeScanner() {
   const [data, setData] = useState(null);
@@ -129,11 +129,13 @@ export function BarcodeScanner() {
  </div>
   {/* Menu fixo no rodapé */}
   <div className="footer-menu">      
-       <div  className='button-menu'>
-     
+       <div  className='button-menu'>     
           <Barcode color='#ffff' onClick={handleOpenCamera} size={35} />
-        <strong> ESCANEAR</strong>
-         
+        <strong> ESCANEAR</strong>        
+       </div>
+       <div  className='button-menu'>     
+          <ClipboardText color='#ffff' onClick={handleOpenCamera} size={35} />
+        <strong> RELATÓRIO</strong>        
        </div>
         
       </div>
