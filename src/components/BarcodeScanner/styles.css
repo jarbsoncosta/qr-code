@@ -1,5 +1,4 @@
-.scanner-container {
-  
+.scanner-container {  
   display: flex;
   flex-direction: column;
  justify-items: start;
@@ -63,3 +62,4 @@
   padding: 20px;
   text-align: center;
 }
+

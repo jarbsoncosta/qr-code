@@ -3,7 +3,7 @@ import { Howl } from 'howler';
 import { BrowserMultiFormatReader } from '@zxing/library';
 import { equipamentos } from '../../utils/dados';
 import "./styles.css";
-import { Barcode, ClipboardText } from '@phosphor-icons/react';
+import { Barcode, ClipboardText, Plus } from '@phosphor-icons/react';
 import beepSoundFile from '../../audio/som.mp3';
 import { Card } from '../Card';
 
@@ -151,7 +151,10 @@ export function BarcodeScanner() {
                <Card data={dataFilter}/>
               </div>
             ) : (
+             <>
               <p className="error-text">Equipamento não encontrado!</p>
+              <button onClick={() => handleEdit(data)} className="btn add-btn"> <Plus size={18} /> Adicionar</button>
+             </>
             )}
           </div>
         )}
