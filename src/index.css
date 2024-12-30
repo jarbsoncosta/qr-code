@@ -7,6 +7,15 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+/* Opcional: definir fonte e outras propriedades padrão */
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.5;
+}

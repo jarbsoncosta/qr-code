@@ -1,7 +1,7 @@
-  
-  
+   
   .container{
     width: 100%;   
+  
   }
   .card-list-title {
     font-size: 24px;
@@ -13,7 +13,6 @@
   
   /* Estilo de cada card */
   .card {  
-    width: 100;
     background-color: #ffffff;
     flex-direction: column;
     display: flex;

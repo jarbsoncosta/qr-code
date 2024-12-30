@@ -152,10 +152,8 @@ export function BarcodeScanner() {
           <div className="result-container">
             {/* <h2 className="subtitle">Código Capturado:</h2>
             <p className="result-text">{data}</p> */}
-            {dataFilter ? (
-              <div className="product-info">
-               <Card data={dataFilter}/>
-              </div>
+            {dataFilter ? (            
+               <Card data={dataFilter}/>             
             ) : (
              <>
               <p className="error-text">Equipamento não encontrado!</p>
