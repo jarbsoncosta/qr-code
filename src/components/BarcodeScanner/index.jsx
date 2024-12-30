@@ -1,31 +1,35 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Howl } from 'howler';
 import { BrowserMultiFormatReader } from '@zxing/library';
-import { products } from '../../utils/dados';
+import { equipamentos } from '../../utils/dados';
 import "./styles.css";
 import { Barcode, ClipboardText } from '@phosphor-icons/react';
 import beepSoundFile from '../../audio/som.mp3';
-
+import { Card } from '../Card';
 
 export function BarcodeScanner() {
   const [data, setData] = useState(null);
   const [dataFilter, setDataFilter] = useState(null);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
+  const [isManualInput, setIsManualInput] = useState(false);
+  const [manualCode, setManualCode] = useState(null);
   const videoRef = useRef(null);
   const readerRef = useRef(null);
 
-  // Configurando o som com Howler.js
   const beepSound = useRef(
     new Howl({
-      src: [beepSoundFile], // Caminho do arquivo de som
-      volume: 1.0, // Volume de 0.0 a 1.0
+      src: [beepSoundFile],
+      volume: 1.0,
     })
   );
 
+
+
   const handleOpenCamera = () => {
-    setData(null); // Limpa o código capturado
-    setDataFilter(null); // Limpa o filtro de produtos
-    setIsCameraOpen(true); // Ativa a câmera
+    setData(null);
+    setDataFilter(null);
+    setIsCameraOpen(true);
+    setIsManualInput(false);
   };
 
   const handleCloseCamera = () => {
@@ -33,7 +37,7 @@ export function BarcodeScanner() {
 
     if (readerRef.current) {
       readerRef.current.reset();
-      readerRef.current = null; // Libera o leitor
+      readerRef.current = null;
     }
 
     if (videoRef.current?.srcObject) {
@@ -43,10 +47,24 @@ export function BarcodeScanner() {
     }
   };
 
+  const handleManualInputToggle = () => {
+    handleCloseCamera(false);
+    setIsManualInput(true);   
+    setData(null);
+    setDataFilter(null);
+  };
+
+  const handleManualInputSubmit = () => {
+    const result = equipamentos.find((item) => item.TOMBO === Number(manualCode));
+    setData(Number(manualCode));
+    setDataFilter(result || null);
+    setManualCode('');
+  };
+
   useEffect(() => {
     if (data) {
-      const result = products.find((item) => item.code === data);
-      setDataFilter(result || null); // Atualiza com o produto ou `null` se não encontrar
+      const result = equipamentos.find((item) => item.TOMBO === data);
+      setDataFilter(result || null);
     }
   }, [data]);
 
@@ -68,10 +86,9 @@ export function BarcodeScanner() {
             videoRef.current,
             (result, error) => {
               if (result) {
-                // Tocar o som ao capturar o código
                 beepSound.current.play();
                 setData(result.getText());
-                handleCloseCamera(); // Fecha a câmera ao capturar o código
+                handleCloseCamera();
               } else if (error) {
                 console.warn('Erro na leitura do código:', error.message);
               }
@@ -85,7 +102,7 @@ export function BarcodeScanner() {
       startScanner();
 
       return () => {
-        handleCloseCamera(); // Garante que a câmera seja fechada ao desmontar
+        handleCloseCamera();
       };
     }
   }, [isCameraOpen]);
@@ -96,6 +113,29 @@ export function BarcodeScanner() {
         {isCameraOpen && (
           <div className="video-container">
             <video ref={videoRef} className="video" autoPlay playsInline />
+   
+          </div>
+        )}
+        {isCameraOpen && (
+          <div className="button-menu">
+            <button onClick={handleManualInputToggle} className="manual-input-button">
+              DIGITAR CÓDIGO
+            </button>
+          </div>
+        )}
+
+        {isManualInput && (
+          <div className="manual-input-container">
+            <h2 className="subtitle">Digite o Código:</h2>
+            <input
+              type="text"
+              value={manualCode}
+              onChange={(e) => setManualCode(e.target.value)}
+              className="manual-input"
+            />
+            <button onClick={handleManualInputSubmit} className="submit-button">
+              Confirmar
+            </button>
           </div>
         )}
 
@@ -106,8 +146,7 @@ export function BarcodeScanner() {
 
             {dataFilter ? (
               <div className="product-info">
-                <h3 className="product-title">Produto Encontrado:</h3>
-                <p className="product-name">{dataFilter.name}</p>
+               <Card data={dataFilter}/>
               </div>
             ) : (
               <p className="error-text">Produto não encontrado!</p>
@@ -125,6 +164,7 @@ export function BarcodeScanner() {
           <ClipboardText color="#ffff" onClick={handleCloseCamera} size={35} />
           <strong> RELATÓRIO</strong>
         </div>
+        
       </div>
     </>
   );

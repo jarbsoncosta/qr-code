@@ -1,0 +1,70 @@
+  
+  .card-list-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  
+  /* Estilo de cada card */
+  .card {
+    background-color: #ffffff;
+    flex-direction: column;
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .card-title {
+    width: 100%;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  /* Botões */
+  .card-buttons {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #ffffff;
+    text-align: center;
+    transition: background-color 0.2s ease;
+  }
+  
+  .ok-btn {
+    background-color: #4caf50;
+  }
+  
+  .ok-btn:hover {
+    background-color: #45a049;
+  }
+  
+  .edit-btn {
+    background-color: #2196f3;
+  }
+  
+  .edit-btn:hover {
+    background-color: #1e87e5;
+  }
+  
