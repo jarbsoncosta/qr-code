@@ -81,11 +81,19 @@
   .add-btn {
     display: flex;
     align-items: center;
-    gap: 0.7rem;
+    gap: 0.5rem;
     background-color: #4caf50;
     font-size: 0.7rem;
   }
   
   .add-btn:hover {
     background-color: #45a049;
+  }
+
+  .error{
+    background: #fef9c3;
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid #facc15;
+    color:#ca8a04
   }

@@ -1,23 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import "./styles.css"
 import { Check, Plus } from "@phosphor-icons/react";
 
 
 
 export function Card ({ data }){
-    console.log(data)
-  const handleOk = (data) => {
-    console.log("OK clicked for:", data);
-    // Lógica para o botão OK
-  };
+  const [error, setError] = useState("")
+ 
+//   const handleOk = (data) => {
+//     console.log("OK clicked for:", data);
+//     // Lógica para o botão OK
+//   };
 
   const handleEdit = (data) => {
     console.log("Edit clicked for:", data);
     // Lógica para o botão Editar
   };
 
+  const handleOk = (data) => {
+    // Recuperar o array existente do localStorage ou inicializar como vazio
+    const storedItems = JSON.parse(localStorage.getItem("selectedItems")) || [];
+    // Verificar se já existe um item com o mesmo TOMBO
+    const itemExists = storedItems.some((item) => item.TOMBO === data.TOMBO);
+    if (itemExists) {
+      setError("Equipamento com o mesmo tombo já existe na listagem");
+      return; // Não adiciona o item duplicado
+    }
+    setError("")
+    // Adicionar o novo item ao array
+    storedItems.push(data);
+    // Salvar o array atualizado no LocalStorage
+    localStorage.setItem("selectedItems", JSON.stringify(storedItems));
+    console.log("Item adicionado ao LocalStorage:", data);
+   
+  };
+
   return (
     <div className="container mx-auto p-4">     
+   {error &&  <p className="error">{ error} </p>}
       <div className="card">
            <div className="content-title">
            <h2 className="card-title">{data.DESCRICAO} </h2>

@@ -7,6 +7,7 @@ import { Barcode, ClipboardText, Plus } from '@phosphor-icons/react';
 import beepSoundFile from '../../audio/som.mp3';
 import { Card } from '../Card';
 
+
 export function BarcodeScanner() {
   const [data, setData] = useState(null);
   const [dataFilter, setDataFilter] = useState(null);
@@ -109,6 +110,11 @@ export function BarcodeScanner() {
     }
   }, [isCameraOpen]);
 
+  function redirecionar() {
+    // URL para onde o usuário será redirecionado
+    window.location.href = "/listagem";
+  }
+
   return (
     <>
       <div className="scanner-container">
@@ -166,7 +172,7 @@ export function BarcodeScanner() {
           <strong> ESCANEAR</strong>
         </div>
         <div className="button-menu">
-          <ClipboardText color="#ffff" onClick={handleCloseCamera} size={35} />
+          <ClipboardText color="#ffff" onClick={redirecionar} size={35} />
           <strong> RELATÓRIO</strong>
         </div>
         
