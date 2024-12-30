@@ -61,9 +61,11 @@ export function BarcodeScanner() {
     setManualCode('');
   };
 
+  console.log(typeof(data))
+
   useEffect(() => {
     if (data) {
-      const result = equipamentos.find((item) => item.TOMBO === data);
+      const result = equipamentos.find((item) => item.TOMBO === Number(data));
       setDataFilter(result || null);
     }
   }, [data]);
@@ -125,14 +127,15 @@ export function BarcodeScanner() {
         )}
 
         {isManualInput && (
-          <div className="manual-input-container">
-            <h2 className="subtitle">Digite o Código:</h2>
+          <div className="manual-input-container">       
             <input
               type="text"
+              placeholder='Codigo'
               value={manualCode}
               onChange={(e) => setManualCode(e.target.value)}
               className="manual-input"
             />
+          
             <button onClick={handleManualInputSubmit} className="submit-button">
               Confirmar
             </button>
@@ -141,15 +144,14 @@ export function BarcodeScanner() {
 
         {data && (
           <div className="result-container">
-            <h2 className="subtitle">Código Capturado:</h2>
-            <p className="result-text">{data}</p>
-
+            {/* <h2 className="subtitle">Código Capturado:</h2>
+            <p className="result-text">{data}</p> */}
             {dataFilter ? (
               <div className="product-info">
                <Card data={dataFilter}/>
               </div>
             ) : (
-              <p className="error-text">Produto não encontrado!</p>
+              <p className="error-text">Equipamento não encontrado!</p>
             )}
           </div>
         )}
