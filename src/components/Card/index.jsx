@@ -1,21 +1,31 @@
 import React, { useState } from "react";
 import "./styles.css"
 import { Check, Plus } from "@phosphor-icons/react";
+import { Modal } from "../Modal";
 
 
 
 export function Card ({ data }){
   const [error, setError] = useState("")
+  const [isModalOpen, setIsModalOpen] = useState(false);
  
 //   const handleOk = (data) => {
 //     console.log("OK clicked for:", data);
 //     // Lógica para o botão OK
 //   };
 
-  const handleEdit = (data) => {
-    console.log("Edit clicked for:", data);
-    // Lógica para o botão Editar
-  };
+const handleEdit = (data) => {
+  setIsModalOpen(true);
+};
+
+const handleModalClose = () => {
+  setIsModalOpen(false);
+};
+
+const handleModalSubmit = (updatedData) => {
+  console.log("Dados atualizados:", updatedData);
+  setIsModalOpen(false);
+};
 
   const handleOk = (data) => {
     // Recuperar o array existente do localStorage ou inicializar como vazio
@@ -53,9 +63,18 @@ export function Card ({ data }){
               <li><strong>Saldo Contábil:</strong> R$ {data.SALDO_CONTABIL.toFixed(2)}</li>
               <div className="card-buttons">
                 <button onClick={() => handleOk(data)} className="btn ok-btn"><Check size={18} /> </button>
-                <button onClick={() => handleEdit(data)} className="btn edit-btn">Transferir</button>              
+                <button onClick={() => handleEdit(data)} className="btn edit-btn">
+                Transferir
+              </button>          
               </div>
-            </div>     
+            </div>  
+            <Modal
+        isOpen={isModalOpen}
+        onClose={handleModalClose}
+        data={data}
+        onSubmit={handleModalSubmit}
+      />
+   
     </div>
   );
 };
