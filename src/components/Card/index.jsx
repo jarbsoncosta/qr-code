@@ -6,43 +6,45 @@ import { Modal } from "../Modal";
 
 
 export function Card ({ data }){
-  const [error, setError] = useState("")
+  const [error, setError] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
- 
-//   const handleOk = (data) => {
-//     console.log("OK clicked for:", data);
-//     // Lógica para o botão OK
-//   };
-
-const handleEdit = (data) => {
-  setIsModalOpen(true);
-};
-
-const handleModalClose = () => {
-  setIsModalOpen(false);
-};
-
-const handleModalSubmit = (updatedData) => {
-  console.log("Dados atualizados:", updatedData);
-  setIsModalOpen(false);
-};
 
   const handleOk = (data) => {
-    // Recuperar o array existente do localStorage ou inicializar como vazio
     const storedItems = JSON.parse(localStorage.getItem("selectedItems")) || [];
-    // Verificar se já existe um item com o mesmo TOMBO
     const itemExists = storedItems.some((item) => item.TOMBO === data.TOMBO);
     if (itemExists) {
       setError("Equipamento com o mesmo tombo já existe na listagem");
-      return; // Não adiciona o item duplicado
+      return;
     }
-    setError("")
-    // Adicionar o novo item ao array
+    setError("");
     storedItems.push(data);
-    // Salvar o array atualizado no LocalStorage
     localStorage.setItem("selectedItems", JSON.stringify(storedItems));
-    console.log("Item adicionado ao LocalStorage:", data);
-   
+  };
+
+  const handleEdit = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleModalSubmit = (updatedData) => {
+    // Recuperar o array existente do localStorage ou inicializar como vazio
+    const storedItems = JSON.parse(localStorage.getItem("selectedItems")) || [];
+    
+    // Substituir o item correspondente no array pelo objeto atualizado
+    const updatedItems = storedItems.filter(
+      (item) => item.TOMBO !== Number(updatedData.TOMBO)
+    );
+    updatedItems.push(updatedData);
+
+    // Salvar o array atualizado no localStorage
+    localStorage.setItem("selectedItems", JSON.stringify(updatedItems));
+
+    console.log("Dados atualizados no localStorage:", updatedData);
+
+    setIsModalOpen(false);
   };
 
   return (

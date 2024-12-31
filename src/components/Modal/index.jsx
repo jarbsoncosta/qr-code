@@ -4,10 +4,21 @@ import "./styles.css"; // Estilize seu modal aqui
 export function Modal({ isOpen, onClose, data, onSubmit }) {
   if (!isOpen) return null;
 
+//   const handleSubmit = (event) => {
+//     event.preventDefault();
+//     const formData = new FormData(event.target);
+//     const updatedData = Object.fromEntries(formData.entries());
+//     onSubmit(updatedData);
+//   };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
-    const updatedData = Object.fromEntries(formData.entries());
+    const updatedData = {
+      ...data, // Mantém os campos existentes
+      ...Object.fromEntries(formData.entries()), // Substitui os campos com os valores do formulário
+      TOMBO: parseInt(formData.get("TOMBO"), 10), // Converte TOMBO para número
+    };
     onSubmit(updatedData);
   };
 
@@ -18,15 +29,22 @@ export function Modal({ isOpen, onClose, data, onSubmit }) {
         <form onSubmit={handleSubmit}>
         <label>
             Descricão:
-            <input type="text" name="GRUPO" defaultValue={data.DESCRICAO} readOnly />
+            <input type="text" name="DESCRICAO" defaultValue={data.DESCRICAO} readOnly />
           </label>
-          <label>
+          {/* <label>
             Grupo:
             <input type="text" name="GRUPO" defaultValue={data.GRUPO} readOnly />
+          </label> */}
+          <label>
+          Grupo:
+            <select name="GRUPO" defaultValue={data.GRUPO}>
+              <option value="EQUIPAMENTOS DE PROCESSAMENTO DE DADOS">EQUIPAMENTOS DE PROCESSAMENTO DE DADOS</option>
+              <option value="MÁQUINAS E EQUIPAMENTOS">MÁQUINAS E EQUIPAMENTOS</option>
+            </select>
           </label>
           <label>
             Tombo:
-            <input type="text" name="TOMBO" defaultValue={data.TOMBO} readOnly />
+            <input type="number" name="TOMBO" defaultValue={data.TOMBO} readOnly />
           </label>
           <label>
             Localização:
@@ -39,9 +57,9 @@ export function Modal({ isOpen, onClose, data, onSubmit }) {
           <label>
             Responsável:
             <select name="RESPONSAVEL" defaultValue={data.RESPONSAVEL}>
-              <option value="Responsável A">JULIANA ALEIXO DE ARAÚJO</option>
-              <option value="Responsável B">Responsável B</option>
-              <option value="Responsável C">Responsável C</option>
+              <option value="JULIANA ALEIXO DE ARAÚJO">JULIANA ALEIXO DE ARAÚJO</option>
+              <option value="MARCELINO JUNIOR">MARCELINO JUNIOR</option>
+              <option value="SATIVA LEIROS">SATIVA LEIROS</option>
             </select>
           </label>
           <label>
@@ -55,8 +73,8 @@ export function Modal({ isOpen, onClose, data, onSubmit }) {
           <label>
             Situação:
             <select name="SITUACAO" defaultValue={data.SITUACAO}>
-              <option value="Ativo">ATIVO</option>
-              <option value="Inativo">INATIVO</option>
+              <option value="ATIVO">ATIVO</option>
+              <option value="INATIVO">INATIVO</option>
              
             </select>
           </label>
