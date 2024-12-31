@@ -10,6 +10,7 @@
   position: relative;
   border: 2px solid red; 
   border-radius: 5px;
+  padding: 0.5rem;
 
 }
 .video {
