@@ -16,6 +16,10 @@ export function Modal({ isOpen, onClose, data, onSubmit }) {
       <div className="modal-container">
         <h2>Transferir Equipamento</h2>
         <form onSubmit={handleSubmit}>
+        <label>
+            Descricão:
+            <input type="text" name="GRUPO" defaultValue={data.DESCRICAO} readOnly />
+          </label>
           <label>
             Grupo:
             <input type="text" name="GRUPO" defaultValue={data.GRUPO} readOnly />

@@ -29,8 +29,9 @@
     width: 100%;
     display: block;
     justify-content: start;
-    align-items: start;
-    margin-bottom: 5px;
+    align-items: start;  
+    font-size: 0.7rem;
+    text-align: start;
   }
   
   .modal-container input,
@@ -41,6 +42,7 @@
     margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    font-size: 0.7rem;
   }
   
   .modal-buttons {
