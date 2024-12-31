@@ -3,9 +3,10 @@ import { Howl } from 'howler';
 import { BrowserMultiFormatReader } from '@zxing/library';
 import { equipamentos } from '../../utils/dados';
 import "./styles.css";
-import { Barcode, ClipboardText, Plus } from '@phosphor-icons/react';
+import { Barcode, ClipboardText, MagnifyingGlass, Plus } from '@phosphor-icons/react';
 import beepSoundFile from '../../audio/som.mp3';
 import { Card } from '../Card';
+import { Footer } from '../Footer';
 
 
 export function BarcodeScanner() {
@@ -62,8 +63,6 @@ export function BarcodeScanner() {
     setManualCode('');
   };
 
-  console.log(typeof(data))
-
   useEffect(() => {
     if (data) {
       const result = equipamentos.find((item) => item.TOMBO === Number(data));
@@ -110,10 +109,7 @@ export function BarcodeScanner() {
     }
   }, [isCameraOpen]);
 
-  function redirecionar() {
-    // URL para onde o usuário será redirecionado
-    window.location.href = "/listagem";
-  }
+
 
   return (
     <>
@@ -143,7 +139,7 @@ export function BarcodeScanner() {
             />
           
             <button onClick={handleManualInputSubmit} className="submit-button">
-              Confirmar
+            <MagnifyingGlass size={30} />
             </button>
           </div>
         )}
@@ -164,7 +160,7 @@ export function BarcodeScanner() {
         )}
       </div>
 
-      <div className="footer-menu">
+      {/* <div className="footer-menu">
         <div className="button-menu">
           <Barcode color="#ffff" onClick={handleOpenCamera} size={35} />
           <strong> ESCANEAR</strong>
@@ -172,9 +168,9 @@ export function BarcodeScanner() {
         <div className="button-menu">
           <ClipboardText color="#ffff" onClick={redirecionar} size={35} />
           <strong> RELATÓRIO</strong>
-        </div>
-        
-      </div>
+        </div>        
+      </div> */}
+      <Footer handleOpenCamera={handleOpenCamera} />
     </>
   );
 }

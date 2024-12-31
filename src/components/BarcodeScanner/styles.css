@@ -9,7 +9,6 @@
   background-color: white;
   position: relative;
   border: 2px solid red; 
-  padding: 0.5rem;
   border-radius: 5px;
 
 }
@@ -23,7 +22,13 @@
 }
 
 .submit-button{
-  margin-left: 1rem;
+  display: flex;
+  align-items: center;
+  padding: 0.4rem 0.5rem;
+  background-color: #007bff;
+  color: white;
+  border: 0;
+  border-radius: 5px;
 }
 
 .footer-menu {
@@ -60,4 +65,17 @@
 
 .result-container { 
   text-align: center;
+}
+.manual-input-container{
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+ 
+}
+.manual-input{
+  padding: 0.5rem;
+  width: 100%;
+  border-radius: 5px;
+  
 }
