@@ -121,8 +121,8 @@ export function BarcodeScanner() {
           </div>
         )}
         {isCameraOpen && (
-          <div className="button-menu">
-            <button onClick={handleManualInputToggle} className="manual-input-button">
+          <div className="content-button-digitar">
+            <button onClick={handleManualInputToggle} className="manual-button-digitar">
               DIGITAR CÓDIGO
             </button>
           </div>
