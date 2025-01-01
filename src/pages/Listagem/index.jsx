@@ -7,7 +7,7 @@ import { BarcodeScanner } from "../../components/BarcodeScanner";
 export function Listagem() {
   const [items, setItems] = useState([]);
 
-  const { handleOpenCamera,isManualInput,  isCameraOpen } =  useContext(CameraContext);
+  const { handleOpenCamera,isManualInput,capturedCode,  isCameraOpen } =  useContext(CameraContext);
   
 
   // Recupera os itens do localStorage ao carregar o componente
@@ -18,7 +18,7 @@ export function Listagem() {
 
   return (
  <>
- {!isCameraOpen && !isManualInput ? (
+ {!isCameraOpen && !isManualInput && !capturedCode ? (
      <div className="container mx-auto p-4">
      <h2 className="text-center text-xl font-bold mb-4">Itens Selecionados</h2>
      {items.length > 0 ? (
