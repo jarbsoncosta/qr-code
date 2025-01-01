@@ -65,8 +65,8 @@ export function Modal({ isOpen, onClose, data, onSubmit }) {
           <label>
             Estado:
             <select name="ESTADO" defaultValue={data.ESTADO}>
-              <option value="Novo">BOM</option>
-              <option value="Usado">REGULAR</option>
+              <option value="BOM">BOM</option>
+              <option value="REGULAR">REGULAR</option>
            
             </select>
           </label>
