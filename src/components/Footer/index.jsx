@@ -13,11 +13,11 @@ export function Footer ({ handleOpenCamera }){
   return (
     <div className="footer-menu">
     <div className="button-menu">
-      <Barcode color="#ffff" onClick={handleOpenCamera} size={30} />
+      <Barcode color="#ffff" onClick={handleOpenCamera} size={25} />
       <strong> Escanear</strong>
     </div>
     <div className="button-menu">
-      <ClipboardText color="#ffff" onClick={redirecionar} size={30} />
+      <ClipboardText color="#ffff" onClick={redirecionar} size={25} />
       <strong> Relatório</strong>
     </div>
     

@@ -1,7 +1,7 @@
 import React from "react";
 import "./styles.css"; // Estilize seu modal aqui
 
-export function Modal({ isOpen, onClose, data, onSubmit }) {
+export function Modal({ isOpen,add, onClose, data, onSubmit }) {
   if (!isOpen) return null;
 
 //   const handleSubmit = (event) => {
@@ -25,7 +25,7 @@ export function Modal({ isOpen, onClose, data, onSubmit }) {
   return (
     <div className="modal-overlay">
       <div className="modal-container">
-        <h2>Transferir Equipamento</h2>
+      <h2>{add ? "Adicionar Equipamento" : "Transferir Equipamento"} </h2>
         <form onSubmit={handleSubmit}>
         <label>
             Descricão:

@@ -61,8 +61,8 @@ export function Card ({ data }){
               <li><strong>Data de Aquisição:</strong> {data.DATA_AQUISICAO}</li>
               <li><strong>Estado:</strong> {data.ESTADO}</li>
               <li><strong>Situação:</strong> {data.SITUACAO}</li>
-              <li><strong>Valor:</strong> R$ {data.VALOR.toFixed(2)}</li>
-              <li><strong>Saldo Contábil:</strong> R$ {data.SALDO_CONTABIL.toFixed(2)}</li>
+              {/* <li><strong>Valor:</strong> R$ {data.VALOR.toFixed(2)}</li> */}
+              {/* <li><strong>Saldo Contábil:</strong> R$ {data.SALDO_CONTABIL.toFixed(2)}</li> */}
               <div className="card-buttons">
                 <button onClick={() => handleOk(data)} className="btn ok-btn"><Check size={18} /> </button>
                 <button onClick={() => handleEdit(data)} className="btn edit-btn">

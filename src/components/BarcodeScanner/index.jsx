@@ -8,6 +8,7 @@ import beepSoundFile from '../../audio/som.mp3';
 import { Card } from '../Card';
 import { Footer } from '../Footer';
 import { CameraContext } from '../../context/cameraContext';
+import { Modal } from '../Modal';
 
 
 export function BarcodeScanner() {
@@ -15,48 +16,38 @@ export function BarcodeScanner() {
   const { handleOpenCamera, handleCloseCamera,setCapturedCode,dataFilter, readerRef,manualCode,
     setManualCode,  isManualInput, setDataFilter, handleManualInputToggle, isCameraOpen, capturedCode,  videoRef } =  useContext(CameraContext);
 
+    const [add, setAdd] = useState(false)
+
+    const [isModalOpen, setModalOpen] = useState(false);
+
+    function handleOpenModal(){
+      setModalOpen(true)
+      setAdd(true)
+    }
+
+    const [newEquipment, setNewEquipment] = useState({
+      DESCRICAO: '',
+      GRUPO: '',
+      TOMBO: '',
+      LOCALIZACAO: '',
+      RESPONSAVEL: '',
+      ESTADO: '',
+      SITUACAO: '',
+      DATA_AQUISICAO: '',
+    });
 
 
-  //const videoRef = useRef(null);
-  // const readerRef = useRef(null);
-
-  // const beepSound = useRef(
-  //   new Howl({
-  //     src: [beepSoundFile],
-  //     volume: 1.0,
-  //   })
-  // );
-
+    const handleAddNewEquipment = (data) => {
+      const existingData = JSON.parse(localStorage.getItem('equipamentos')) || [];
+      const updatedData = [...existingData, data];
+      localStorage.setItem('equipamentos', JSON.stringify(updatedData));
+      setModalOpen(false);
+      setCapturedCode(data.TOMBO);
+      setDataFilter(data);
+    };
 
 
-  // handleOpenCamera = () => {
-  //   setData(null);
-  //   setDataFilter(null);
-  //   setIsCameraOpen(true);
-  //   setIsManualInput(false);
-  // };
 
-  // const handleCloseCamera = () => {
-  //   setIsCameraOpen(false);
-
-  //   if (readerRef.current) {
-  //     readerRef.current.reset();
-  //     readerRef.current = null;
-  //   }
-
-  //   if (videoRef.current?.srcObject) {
-  //     const tracks = videoRef.current.srcObject.getTracks();
-  //     tracks.forEach((track) => track.stop());
-  //     videoRef.current.srcObject = null;
-  //   }
-  // };
-
-  // const handleManualInputToggle = () => {
-  //   handleCloseCamera(false);
-  //   setIsManualInput(true);   
-  //   setCapturedCode(null);
-  //   setDataFilter(null);
-  // };
 
   const handleManualInputSubmit = () => {
     const result = equipamentos.find((item) => item.TOMBO === Number(manualCode));
@@ -71,46 +62,6 @@ export function BarcodeScanner() {
       setDataFilter(result || null);
     }
   }, [capturedCode]);
-
-  // useEffect(() => {
-  //   if (isCameraOpen) {
-  //     const codeReader = new BrowserMultiFormatReader();
-  //     readerRef.current = codeReader;
-
-  //     const startScanner = async () => {
-  //       try {
-  //         const stream = await navigator.mediaDevices.getUserMedia({
-  //           video: { facingMode: 'environment' },
-  //         });
-
-  //         videoRef.current.srcObject = stream;
-
-  //         await codeReader.decodeFromVideoDevice(
-  //           null,
-  //           videoRef.current,
-  //           (result, error) => {
-  //             if (result) {
-  //               beepSound.current.play();
-  //               setCapturedCode(result.getText());
-  //               handleCloseCamera();
-  //             } else if (error) {
-  //               console.warn('Erro na leitura do código:', error.message);
-  //             }
-  //           }
-  //         );
-  //       } catch (err) {
-  //         console.error('Erro ao tentar acessar a câmera:', err);
-  //       }
-  //     };
-
-  //     startScanner();
-
-  //     return () => {
-  //       handleCloseCamera();
-  //     };
-  //   }
-  // }, [isCameraOpen]);
-
 
 
   return (
@@ -155,24 +106,25 @@ export function BarcodeScanner() {
             ) : (
              <>
               <p className="error-text">Equipamento não encontrado!</p>
-              <button onClick={() => handleEdit(data)} className="btn add-btn"> <Plus size={18} /> Adicionar</button>
+              <button onClick={handleOpenModal} className="btn add-btn">
+                  Adicionar
+                </button>
              </>
             )}
           </div>
         )}
       </div>
 
-      {/* <div className="footer-menu">
-        <div className="button-menu">
-          <Barcode color="#ffff" onClick={handleOpenCamera} size={35} />
-          <strong> ESCANEAR</strong>
-        </div>
-        <div className="button-menu">
-          <ClipboardText color="#ffff" onClick={redirecionar} size={35} />
-          <strong> RELATÓRIO</strong>
-        </div>        
-      </div> */}
+     
       <Footer handleOpenCamera={handleOpenCamera} />
+
+      <Modal
+        add={add}
+        isOpen={isModalOpen}
+        onClose={() => setModalOpen(false)}
+        data={newEquipment}
+        onSubmit={handleAddNewEquipment}
+      />
     </>
   );
 }
